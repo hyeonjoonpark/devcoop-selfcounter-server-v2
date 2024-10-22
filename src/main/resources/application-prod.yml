@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: communication_devtools
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 30
+      idle-timeout: 10
+      max-lifetime: 1800000
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: ${DB_PASSWORD}
+      username: ${DB_USERNAME}
+      jdbc-url: jdbc:mysql://${DB_HOST}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.hibernate.format_sql: true
+      hibernate.hibernate.default_batch_fetch_size: 100
+    generate-ddl: true
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  port: 8081

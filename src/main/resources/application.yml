@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    default: dev
+    active: dev
+    include: dev
+
+---
+spring:
+  profiles:
+    active: prod
+    include: prod

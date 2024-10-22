@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: communication_devtools
+  datasource:
+    url: jdbc:mysql://${DB_HOST}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: ${DB_PASSWORD}
+      username: ${DB_USERNAME}
+      connection-timeout: 30000
+      maximum-pool-size: 30
+      idle-timeout: 10
+      max-lifetime: 1800000
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    open-in-view: false
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  port: 8081
