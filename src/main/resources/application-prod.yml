@@ -2,26 +2,24 @@ spring:
   application:
     name: communication_devtools
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
     hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: ${DB_PASSWORD}
+      username: ${DB_USERNAME}
       connection-timeout: 30000
       maximum-pool-size: 30
       idle-timeout: 10
       max-lifetime: 1800000
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      password: ${DB_PASSWORD}
-      username: ${DB_USERNAME}
-      jdbc-url: jdbc:mysql://${DB_HOST}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate.hibernate.format_sql: true
-      hibernate.hibernate.default_batch_fetch_size: 100
+    show-sql: true
     generate-ddl: true
-  main:
-    allow-bean-definition-overriding: true
-
+    database: mysql
+    open-in-view: false
 server:
   servlet:
     encoding:
