@@ -1,5 +1,6 @@
 package devcoop.hyunjoon.selfcounter.domain.user
 
+import com.devcoop.kiosk.domain.paylog.PayLog
 import devcoop.hyunjoon.selfcounter.domain.user.enums.Role
 import jakarta.persistence.*
 
@@ -32,4 +33,12 @@ class User private constructor(
         protected set
     @Enumerated(value = EnumType.STRING) @Column(name = "roles") var role: Role = Role.ROLE_USER
         protected set
+
+    @OneToMany(mappedBy = "_user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var payLogs: MutableList<PayLog> = mutableListOf()
+
+    fun addPaylog(payLog: PayLog) {
+        payLogs.add(payLog)
+        this.payLogs.add(payLog)
+    }
 }
