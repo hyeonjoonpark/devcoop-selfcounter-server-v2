@@ -1,5 +1,6 @@
 package devcoop.hyunjoon.selfcounter.domain.user
 
+import devcoop.hyunjoon.selfcounter.domain.user.enums.Role
 import jakarta.persistence.*
 
 @Entity(name = "common_user")

@@ -1,4 +1,4 @@
-package devcoop.hyunjoon.selfcounter.domain.user
+package devcoop.hyunjoon.selfcounter.domain.user.enums
 
 enum class Role(val description: String) {
     ROLE_ADMIN("관리자"),
