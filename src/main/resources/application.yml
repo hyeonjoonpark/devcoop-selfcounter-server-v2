@@ -3,7 +3,6 @@ spring:
     default: dev
     active: dev
     include: dev
-
 ---
 spring:
   profiles:
