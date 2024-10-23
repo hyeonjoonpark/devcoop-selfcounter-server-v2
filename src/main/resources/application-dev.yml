@@ -27,3 +27,6 @@ server:
       enabled: true
       force: true
   port: 8081
+
+jwt:
+  secret: D3vC00p#K1o$k@4uth*2024!Zx9Qw2Hy5Uj8Lm1Np6Vb4Tc7Rg0Ae3Xd9Ys6Fh2Jk5Nq1Bw7Ec0Tp3Rx6Uz9Iy2Oa4Df7Gh0Jl3Ks6Pv9Xn2Mb5Zt8Aq1We4Ry7Uh0Io3Fp6Dc9Lj2Nx5Bm8Vk1Qw4Hs7Ty0Gu3Ep9Rz6Xa2Oi5Jf
