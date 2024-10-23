@@ -2,11 +2,11 @@ spring:
   application:
     name: communication_devtools
   datasource:
-    url: jdbc:mysql://${DB_LOCAL_HOST}/Oring?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
+    url: jdbc:mysql://${DB_LOCAL_HOST}/Oring?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ${DB_LOCAL_PASSWORD}
+    username: ${DB_LOCAL_USERNAME}
     hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      password: ${DB_LOCAL_PASSWORD}
-      username: ${DB_LOCAL_USERNAME}
       connection-timeout: 30000
       maximum-pool-size: 30
       idle-timeout: 10
