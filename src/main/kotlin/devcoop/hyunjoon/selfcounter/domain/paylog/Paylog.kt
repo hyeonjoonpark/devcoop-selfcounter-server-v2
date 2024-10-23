@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 class PayLog(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var payId: Long = 0L,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "userCode", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "user_id", nullable = false)
     private var _user: User,
     @CreatedDate var payDate: LocalDateTime = LocalDateTime.now(),
     var payType: String,
