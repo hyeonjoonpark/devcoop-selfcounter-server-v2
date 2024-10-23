@@ -1,6 +1,5 @@
 package devcoop.hyunjoon.selfcounter.domain.user.presentation
 
-import devcoop.hyunjoon.selfcounter.domain.user.service.UserService
 import devcoop.hyunjoon.selfcounter.global.utils.ApiPath
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
