@@ -13,7 +13,7 @@ class User private constructor(
     userPassword: String,
     userPin: String,
     userPoint: Int,
-    userFingerPrint: String
+    userFingerPrint: String,
 ) {
     @Id @Column(name = "userNumber") var id: String = id
         protected set
@@ -35,7 +35,8 @@ class User private constructor(
     var role: Role = Role.ROLE_USER
         protected set
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    private val _payLogs: MutableList<PayLog> = mutableListOf()
+    var payLogs: MutableList<PayLog> = mutableListOf()
+        protected set
 
     companion object {
         fun create(
@@ -46,9 +47,19 @@ class User private constructor(
             userPassword: String,
             userPin: String,
             userPoint: Int,
-            userFingerPrint: String
+            userFingerPrint: String,
+            payLogs: MutableList<PayLog>
         ): User {
-            return User(id, userCode, userName, userEmail, userPassword, userPin, userPoint, userFingerPrint)
+            return User(
+                id = id,
+                userCode = userCode,
+                userName = userName,
+                userEmail = userEmail,
+                userPassword = userPassword,
+                userPin = userPin,
+                userPoint = userPoint,
+                userFingerPrint = userFingerPrint,
+            )
         }
     }
 }
