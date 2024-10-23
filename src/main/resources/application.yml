@@ -1,6 +1,11 @@
 spring:
   profiles:
-    default: dev
+    active: local
+    include: local
+    default: local
+---
+spring:
+  profiles:
     active: dev
     include: dev
 ---

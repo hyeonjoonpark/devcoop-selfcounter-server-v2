@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: communication_devtools
+  datasource:
+    url: jdbc:mysql://${DB_LOCAL_HOST}/Oring?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      password: ${DB_LOCAL_PASSWORD}
+      username: ${DB_LOCAL_USERNAME}
+      connection-timeout: 30000
+      maximum-pool-size: 30
+      idle-timeout: 10
+      max-lifetime: 1800000
+  main:
+    allow-bean-definition-overriding: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    open-in-view: false
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  port: 8081
+
+jwt:
+  secret: D3vC00p#K1o$k@4uth*2024!Zx9Qw2Hy5Uj8Lm1Np6Vb4Tc7Rg0Ae3Xd9Ys6Fh2Jk5Nq1Bw7Ec0Tp3Rx6Uz9Iy2Oa4Df7Gh0Jl3Ks6Pv9Xn2Mb5Zt8Aq1We4Ry7Uh0Io3Fp6Dc9Lj2Nx5Bm8Vk1Qw4Hs7Ty0Gu3Ep9Rz6Xa2Oi5Jf
