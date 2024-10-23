@@ -1,6 +1,6 @@
 package devcoop.hyunjoon.selfcounter.domain.user
 
-import com.devcoop.kiosk.domain.paylog.PayLog
+import devcoop.hyunjoon.selfcounter.domain.paylog.PayLog
 import devcoop.hyunjoon.selfcounter.domain.user.enums.Role
 import jakarta.persistence.*
 

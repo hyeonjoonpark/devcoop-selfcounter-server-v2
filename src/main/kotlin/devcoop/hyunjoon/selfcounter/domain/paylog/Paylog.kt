@@ -1,4 +1,4 @@
-package com.devcoop.kiosk.domain.paylog
+package devcoop.hyunjoon.selfcounter.domain.paylog
 
 import devcoop.hyunjoon.selfcounter.domain.item.enums.EventType
 import devcoop.hyunjoon.selfcounter.domain.user.User
