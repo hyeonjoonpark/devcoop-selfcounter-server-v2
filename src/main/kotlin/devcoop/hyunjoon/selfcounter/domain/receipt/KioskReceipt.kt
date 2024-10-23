@@ -20,7 +20,11 @@ class KioskReceipt private constructor(
     @JoinColumn(name = "items", nullable = false)
     private val _items: MutableList<Item> = mutableListOf(),
     val userCode: String, // 사용자 바코드
+<<<<<<< HEAD
     @Enumerated(EnumType.STRING) val saleType: SaleType, // 결제 타입('정상결제', '환불결제')
+=======
+    @Enumerated(EnumType.STRING) val saleType: SaleType, // 결제 타입('정상결제', '반품결제')
+>>>>>>> origin/main
     @Enumerated(EnumType.STRING) val eventType: EventType // 이벤트 여부 ('ONE_PLUS_ONE', 'NONE')
 ) {
     @CreatedDate var saleDate: LocalDateTime = LocalDateTime.now() // 거래 발생 시간
