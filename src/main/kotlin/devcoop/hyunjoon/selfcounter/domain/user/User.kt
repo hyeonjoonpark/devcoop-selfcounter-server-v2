@@ -41,8 +41,8 @@ class User private constructor(
         get() = _payLogs
 
     fun addPaylog(payLog: PayLog) {
-        payLog.user = this // PayLog의 user를 현재 User로 설정
-        _payLogs.add(payLog) // PayLog를 리스트에 추가
+        payLog.user = this
+        _payLogs.add(payLog)
     }
 
     companion object {
