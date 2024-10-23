@@ -37,14 +37,6 @@ class User private constructor(
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     private val _payLogs: MutableList<PayLog> = mutableListOf()
 
-    val payLogs: List<PayLog>
-        get() = _payLogs
-
-    fun addPaylog(payLog: PayLog) {
-        payLog.user = this
-        _payLogs.add(payLog)
-    }
-
     companion object {
         fun create(
             id: String,
