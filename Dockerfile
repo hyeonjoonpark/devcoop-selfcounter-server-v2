@@ -11,6 +11,6 @@ FROM openjdk:17-alpine
 
 WORKDIR /app
 
-COPY --from=build /home/gradle/project/build/libs/kiosk-0.0.1-SNAPSHOT.jar /app/kiosk.jar
+COPY --from=build /home/gradle/project/build/libs/selfcounter-0.0.1-SNAPSHOT-plain.jar /app/kiosk.jar
 
 CMD ["java", "-jar", "-Dspring.profiles.active=prod", "/app/kiosk.jar"]
