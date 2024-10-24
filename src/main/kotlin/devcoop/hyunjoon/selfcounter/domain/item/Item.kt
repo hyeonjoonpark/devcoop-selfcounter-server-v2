@@ -26,4 +26,7 @@ class Item(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receipt_id", nullable = false)
     var receipt: KioskReceipt,
+
+    @ManyToMany(mappedBy = "items")
+    val receipts: MutableList<KioskReceipt> = mutableListOf()
 )
