@@ -50,7 +50,7 @@ class User private constructor(
             userFingerPrint: String,
         ): User {
             return User(
-                id = id,
+                id = id, // id 생성로직 확인필요
                 userCode = userCode,
                 userName = userName,
                 userEmail = userEmail,
