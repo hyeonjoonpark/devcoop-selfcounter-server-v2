@@ -48,7 +48,6 @@ class User private constructor(
             userPin: String,
             userPoint: Int,
             userFingerPrint: String,
-            payLogs: MutableList<PayLog>
         ): User {
             return User(
                 id = id,
