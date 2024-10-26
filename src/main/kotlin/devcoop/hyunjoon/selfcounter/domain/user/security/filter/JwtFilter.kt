@@ -24,22 +24,19 @@ class JwtFilter(
     ) {
         val authorizationHeader = request.getHeader("Authorization")
 
-        lateinit var userName: String
-        lateinit var jwt: String
-
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7)
-            userName = jwtUtil.extractUsername(jwt)
-        }
+            val jwt = authorizationHeader.substring(7)
+            val userCode = jwtUtil.extractUsername(jwt)
 
-        if (SecurityContextHolder.getContext().authentication == null) {
-            val userDetails = customUserDetailsService.loadUserByUsername(userName)
-            if (jwtUtil.validateToken(jwt, userDetails)) {
-                val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.authorities
-                )
-                usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+            if (SecurityContextHolder.getContext().authentication == null) {
+                val userDetails = customUserDetailsService.loadUserByUsername(userCode)
+                if (jwtUtil.validateTokenForUser(jwt, userDetails)) {
+                    val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.authorities
+                    )
+                    usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+                    SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+                }
             }
         }
         filterChain.doFilter(request, response)
