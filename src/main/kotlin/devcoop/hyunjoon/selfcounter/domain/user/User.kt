@@ -34,6 +34,9 @@ class User private constructor(
     @Enumerated(value = EnumType.STRING) @Column(name = "role")
     var role: Role = Role.ROLE_USER
         protected set
+    @Column(name = "refreshToken")
+    lateinit var refreshToken: String
+
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
     var payLogs: MutableList<PayLog> = mutableListOf()
         protected set
