@@ -30,9 +30,22 @@ class JwtUtil {
             .compact()
     }
 
-    fun validateToken(token: String, userDetails: UserDetails): Boolean {
+    fun validateToken(token: String): Boolean {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(Keys
+                .hmacShaKeyFor(secret.toByteArray()))
+                .build()
+                .parseClaimsJws(token)
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    fun validateTokenForUser(token: String, userDetails: UserDetails): Boolean {
         val username = extractUsername(token)
-        return (username == userDetails.username && !isTokenExpired(token))
+        return (username == userDetails.username && validateToken(token))
     }
 
     fun extractUsername(token: String): String {
@@ -58,5 +71,15 @@ class JwtUtil {
             .build()
             .parseClaimsJws(token)
             .body
+    }
+
+    fun generateTokenFromRefreshToken(refreshToken: String, accessTokenExpiredTime: Long): String {
+        val username = extractUsername(refreshToken)
+        val claims = HashMap<String, Any>()
+        return createToken(claims, username, accessTokenExpiredTime)
+    }
+
+    fun validateRefreshToken(refreshToken: String): Boolean {
+        return validateToken(refreshToken) && !isTokenExpired(refreshToken)
     }
 }
