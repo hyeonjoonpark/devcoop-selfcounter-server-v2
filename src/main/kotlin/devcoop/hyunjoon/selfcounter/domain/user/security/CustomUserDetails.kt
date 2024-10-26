@@ -11,7 +11,7 @@ class CustomUserDetails(private val user: User) : UserDetails {
         return listOf(SimpleGrantedAuthority(user.role.name))
     }
 
-    override fun getPassword(): String = user.userPassword
+    override fun getPassword(): String = user.userPin
 
     override fun getUsername(): String = user.userName
 
