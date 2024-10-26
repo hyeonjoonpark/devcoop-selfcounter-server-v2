@@ -1,6 +1,8 @@
 package devcoop.hyunjoon.selfcounter.domain.user.service
 
 import devcoop.hyunjoon.selfcounter.domain.user.User
+import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
+import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
 import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
@@ -47,6 +49,28 @@ class UserService(
         } catch (error: ValidationException) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.message)
         }
+    }
+
+    @Transactional(rollbackFor = [Exception::class])
+    fun signIn(dto: SigninRequest): SigninResponse {
+        val user: User = userRepository.findById(dto.userCode)
+            .orElseThrow { IllegalStateException("존재하지 않는 사용자입니다") }
+
+        if (!passwordEncoder.matches(dto.userPin, user.userPin)) {
+            throw ValidationException("비밀번호가 일치하지 않습니다.")
+        }
+
+        val accessToken = ""
+        val refreshToken = "refresh_token_$user.id"
+
+        return SigninResponse(
+            message = "로그인 성공",
+            userCode = user.userCode,
+            userName = user.userName,
+            userPoint = user.userPoint,
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
 
     fun createUserId(year: String?, category: String): String {

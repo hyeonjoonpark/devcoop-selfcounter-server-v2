@@ -1,5 +1,7 @@
 package devcoop.hyunjoon.selfcounter.domain.user.presentation
 
+import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
+import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.UserPointRequest
 import devcoop.hyunjoon.selfcounter.domain.user.service.UserRepository
@@ -27,5 +29,10 @@ class UserController(
     @PostMapping("/signUp")
     fun signUp(@RequestBody dto: SignupRequest): ResponseEntity<Any> {
         return userService.signUp(dto);
+    }
+
+    @PostMapping("/signIn")
+    fun signIn(dto: SigninRequest): SigninResponse {
+        return userService.signIn(dto)
     }
 }

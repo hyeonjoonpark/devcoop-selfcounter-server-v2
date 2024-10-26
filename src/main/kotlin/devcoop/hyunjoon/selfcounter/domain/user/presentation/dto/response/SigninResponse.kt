@@ -1,4 +1,4 @@
-package devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request
+package devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response
 
 import jakarta.validation.constraints.NotBlank
 
