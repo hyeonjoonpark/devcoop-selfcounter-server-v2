@@ -6,5 +6,10 @@ data class SignupRequest(
     val userName: String,
     val userEmail: String,
     val userPassword: String,
-    val userPin: String
+    val userPin: String,
+    val userFingerPrint: String,
+
+    val entryYear: String, // 입학년도
+    // 학생, 학부모, 교사
+    val category: String
 )
