@@ -21,18 +21,23 @@ class UserController(
     val userService: UserService,
     private val userRepository: UserRepository
 ) {
-    @PutMapping("/pay")
+    companion object {
+        private const val USER_POINT = "/point"
+        private const val AUTH = "/auth"
+    }
+
+    @PutMapping(USER_POINT + "/deduct")
     fun pay(@RequestBody dto: UserPointRequest): ResponseEntity<Any> {
         return ResponseEntity.status(HttpStatus.OK).body(null)
     }
 
-    @PostMapping("/signUp")
+    @PostMapping(AUTH + "/signUp")
     fun signUp(@RequestBody dto: SignupRequest): ResponseEntity<Any> {
         return userService.signUp(dto);
     }
 
-    @PostMapping("/signIn")
-    fun signIn(dto: SigninRequest): SigninResponse {
+    @PostMapping(AUTH + "/signIn")
+    fun signIn(@RequestBody dto: SigninRequest): SigninResponse {
         return userService.signIn(dto)
     }
 }
