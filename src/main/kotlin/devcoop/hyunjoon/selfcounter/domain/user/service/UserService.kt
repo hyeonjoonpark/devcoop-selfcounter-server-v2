@@ -4,7 +4,7 @@ import devcoop.hyunjoon.selfcounter.domain.user.User
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
-import devcoop.hyunjoon.selfcounter.domain.user.security.CustomUserDetails
+import devcoop.hyunjoon.selfcounter.domain.user.security.CustomUserDetailsService
 import devcoop.hyunjoon.selfcounter.global.utils.JwtUtil
 import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
@@ -13,6 +13,7 @@ import devcoop.hyunjoon.selfcounter.global.validator.UserValidator
 import jakarta.validation.ValidationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,7 +22,8 @@ import org.springframework.transaction.annotation.Transactional
 class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil,
+    private val customUserDetailsService: CustomUserDetailsService
 ) {
     private var accessTokenExpiredTime = 1000 * 60 * 60L
     private var refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L
@@ -51,7 +53,7 @@ class UserService(
             )
             userRepository.save(user)
 
-            ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공")
+            ResponseEntity.status(HttpStatus.CREATED).body("회원가입에 성공하였습니다")
         } catch (error: ValidationException) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.message)
         }
@@ -59,14 +61,14 @@ class UserService(
 
     @Transactional(rollbackFor = [Exception::class])
     fun signIn(dto: SigninRequest): SigninResponse {
-        val user: User = userRepository.findById(dto.userCode)
-            .orElseThrow { IllegalStateException("존재하지 않는 사용자입니다") }
+        val userDetails: UserDetails = customUserDetailsService.loadUserByUsername(dto.userCode)
+         val user = userRepository.findByUserCode(dto.userCode)
+             .orElseThrow{throw IllegalStateException("존재하지 않는 사용자입니다")}
 
-        if (!passwordEncoder.matches(dto.userPin, user.userPin)) {
+        if (!passwordEncoder.matches(dto.userPin, userDetails.password)) {
             throw ValidationException("비밀번호가 일치하지 않습니다.")
         }
         
-        val userDetails = CustomUserDetails(user)
         val accessToken = jwtUtil.generateToken(userDetails, accessTokenExpiredTime)
         val refreshToken = jwtUtil.generateToken(userDetails, refreshTokenExpiredTime)
 
@@ -75,7 +77,7 @@ class UserService(
         userRepository.save(user)
 
         return SigninResponse(
-            message = "로그인 성공",
+            message = "로그인을 성공하였습니다",
             userCode = user.userCode,
             userName = user.userName,
             userPoint = user.userPoint,
@@ -93,5 +95,23 @@ class UserService(
             else -> throw IllegalArgumentException("올바른 구분이 아닙니다.")
         }
         return year + categoryNumber + (maxValue + 1).toString()
+    }
+
+    fun refreshAccessToken(refreshToken: String): String {
+        // refreshToken 유효성 검사
+        if (!jwtUtil.validateToken(refreshToken)) {
+            throw IllegalArgumentException("유효하지 않은 리프레시 토큰입니다.")
+        }
+
+        val userCode = jwtUtil.extractUsername(refreshToken)
+        val user = userRepository.findByUserCode(userCode)
+            .orElseThrow { IllegalArgumentException("사용자를 찾을 수 없습니다.") }
+
+        // 저장된 리프레시 토큰과 비교
+        if (user.refreshToken != refreshToken) {
+            throw IllegalArgumentException("저장된 리프레시 토큰과 일치하지 않습니다.")
+        }
+
+        return jwtUtil.generateTokenFromRefreshToken(refreshToken, accessTokenExpiredTime)
     }
 }
