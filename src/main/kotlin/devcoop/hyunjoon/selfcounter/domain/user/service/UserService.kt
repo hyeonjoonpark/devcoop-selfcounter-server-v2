@@ -1,8 +1,12 @@
 package devcoop.hyunjoon.selfcounter.domain.user.service
 
 import devcoop.hyunjoon.selfcounter.domain.user.User
-import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
+import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
+import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
+import devcoop.hyunjoon.selfcounter.global.validator.UserPinValidator
+import devcoop.hyunjoon.selfcounter.global.validator.UserValidator
+import jakarta.validation.ValidationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -12,40 +16,37 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder // 생성자 주입
+    private val passwordEncoder: PasswordEncoder
 ) {
+    private val validators: List<UserValidator> = listOf(
+        UserCodeValidator(userRepository),
+        UserPinValidator(),
+        UserEmailValidator()
+    )
+
     @Transactional(rollbackFor = [Exception::class])
     fun signUp(dto: SignupRequest): ResponseEntity<Any> {
-        val isUserExisted: Boolean = userRepository.existsById(dto.userCode)
-        if (isUserExisted) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 존재하는 사용자입니다")
+        return try {
+            validators.forEach { validator ->
+                validator.validate(dto)
+            }
+
+            val user: User = User.create(
+                id = createUserId(dto.entryYear, dto.category),
+                userCode = dto.userCode,
+                userName = dto.userName,
+                userEmail = dto.userEmail,
+                userPassword = passwordEncoder.encode(dto.userPassword),
+                userPin = passwordEncoder.encode(dto.userPin),
+                userPoint = 0,
+                userFingerPrint = dto.userFingerPrint,
+            )
+            userRepository.save(user)
+
+            ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공")
+        } catch (error: ValidationException) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.message)
         }
-
-        val user: User = User.create(
-            id = createUserId(dto.entryYear, dto.category),
-            userCode = dto.userCode,
-            userName = dto.userName,
-            userEmail = dto.userEmail,
-            userPassword = passwordEncoder.encode(dto.userPassword),
-            userPin = dto.userPin,
-            userPoint = 0,
-            userFingerPrint = dto.userFingerPrint,
-        )
-        userRepository.save(user)
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입 성공")
-    }
-
-    @Transactional(readOnly = true, rollbackFor = [Exception::class])
-    fun login(): SigninResponse {
-        return SigninResponse(
-            message = "로그인을 성공하였습니다",
-            userCode = "testCode",
-            userName = "testName",
-            userPoint = 0,
-            accessToken = "testAccessToken",
-            refreshToken = "testRefreshToken"
-        )
     }
 
     fun createUserId(year: String?, category: String): String {
