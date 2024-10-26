@@ -1,4 +1,4 @@
-package com.devcoop.kiosk.global.config
+package devcoop.hyunjoon.selfcounter.global.config
 
 import devcoop.hyunjoon.selfcounter.global.utils.ApiPath
 import org.springframework.beans.factory.annotation.Value
@@ -32,6 +32,7 @@ class SecurityConfig(
             .httpBasic { it.disable() }
             .authorizeHttpRequests { request ->
                 request
+                    .requestMatchers(HttpMethod.POST, ApiPath.COUNTER_USER_API_URL + "/signUp").permitAll()
                     // 결제 (유저 포인트 차감 API)
                     .requestMatchers(HttpMethod.PUT, ApiPath.COUNTER_USER_API_URL + "/pay").authenticated()
                     .anyRequest().permitAll()
