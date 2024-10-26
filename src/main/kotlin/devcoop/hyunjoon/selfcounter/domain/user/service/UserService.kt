@@ -4,6 +4,8 @@ import devcoop.hyunjoon.selfcounter.domain.user.User
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
+import devcoop.hyunjoon.selfcounter.domain.user.security.CustomUserDetails
+import devcoop.hyunjoon.selfcounter.global.utils.JwtUtil
 import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserPinValidator
@@ -18,8 +20,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val jwtUtil: JwtUtil
 ) {
+    private var accessTokenExpiredTime = 1000 * 60 * 60L
+    private var refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L
+    
     private val validators: List<UserValidator> = listOf(
         UserCodeValidator(userRepository),
         UserPinValidator(),
@@ -59,9 +65,14 @@ class UserService(
         if (!passwordEncoder.matches(dto.userPin, user.userPin)) {
             throw ValidationException("비밀번호가 일치하지 않습니다.")
         }
+        
+        val userDetails = CustomUserDetails(user)
+        val accessToken = jwtUtil.generateToken(userDetails, accessTokenExpiredTime)
+        val refreshToken = jwtUtil.generateToken(userDetails, refreshTokenExpiredTime)
 
-        val accessToken = ""
-        val refreshToken = "refresh_token_$user.id"
+        // Refresh token 저장 로직
+        user.refreshToken = refreshToken
+        userRepository.save(user)
 
         return SigninResponse(
             message = "로그인 성공",
