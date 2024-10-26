@@ -48,7 +48,7 @@ class UserService(
         )
     }
 
-    fun createUserId(year: String?, category: String = "학생"): String {
+    fun createUserId(year: String?, category: String): String {
         val maxValue: Long = userRepository.count()
         val categoryNumber = when (category) {
             "학생" -> "01"
