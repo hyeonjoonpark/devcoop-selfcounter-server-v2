@@ -131,6 +131,6 @@ class UserService(
             throw IllegalArgumentException("저장된 리프레시 토큰과 일치하지 않습니다.")
         }
 
-        return jwtUtil.generateTokenFromRefreshToken(refreshToken, accessTokenExpiredTime)
+        return jwtUtil.generateTokenFromRefreshToken(refreshToken, ACCESS_TOKEN_EXPIRED_TIME)
     }
 }
