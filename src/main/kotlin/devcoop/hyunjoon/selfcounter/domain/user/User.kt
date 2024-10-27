@@ -28,7 +28,6 @@ class User private constructor(
     @Column(name = "userPin") var userPin: String = userPin
         protected set
     @Column(name = "userPoint") var userPoint: Int = userPoint
-        protected set
     @Column(name = "userFingerPrint") var userFingerPrint: String = userFingerPrint
         protected set
     @Enumerated(value = EnumType.STRING) @Column(name = "role")
