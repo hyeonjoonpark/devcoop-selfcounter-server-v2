@@ -4,6 +4,7 @@ import devcoop.hyunjoon.selfcounter.domain.user.User
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
+import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.UserPointReqeust
 import devcoop.hyunjoon.selfcounter.domain.user.security.CustomUserDetailsService
 import devcoop.hyunjoon.selfcounter.global.utils.JwtUtil
 import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
@@ -33,6 +34,20 @@ class UserService(
         UserPinValidator(),
         UserEmailValidator()
     )
+
+    @Transactional(rollbackFor = [Exception::class])
+    fun deductPoint(dto: UserPointReqeust): ResponseEntity<Any> {
+        val user = userRepository.findByUserCode(dto.userCode)
+            .orElseThrow{throw RuntimeException("존재하지 않는 사용자입니다")}
+        if (user.userPoint < dto.totalPrice) {
+            // 부족한 금액
+            val minusPrice = dto.totalPrice - user.userPoint
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("${minusPrice}원이 부족합니다")
+        }
+        user.userPoint -= dto.totalPrice
+        userRepository.save(user)
+        return ResponseEntity.status(HttpStatus.OK).body("성공적으로 결제되었습니다")
+    }
 
     @Transactional(rollbackFor = [Exception::class])
     fun signUp(dto: SignupRequest): ResponseEntity<Any> {
@@ -97,7 +112,7 @@ class UserService(
         return year + categoryNumber + (maxValue + 1).toString()
     }
 
-    fun refreshAccessToken(refreshToken: String): String {
+    fun reIssueAccessToken(refreshToken: String): String {
         // refreshToken 유효성 검사
         if (!jwtUtil.validateToken(refreshToken)) {
             throw IllegalArgumentException("유효하지 않은 리프레시 토큰입니다.")
