@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.Objects
 
 @Service
 class UserService(
@@ -26,6 +27,7 @@ class UserService(
     private val jwtUtil: JwtUtil,
     private val customUserDetailsService: CustomUserDetailsService
 ) {
+    val response: MutableMap<String, Any> = mutableMapOf()
     private var accessTokenExpiredTime = 1000 * 60 * 60L
     private var refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L
     
@@ -42,11 +44,13 @@ class UserService(
         if (user.userPoint < dto.totalPrice) {
             // 부족한 금액
             val minusPrice = dto.totalPrice - user.userPoint
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("${minusPrice}원이 부족합니다")
+            response.put("error", "${minusPrice}원이 부족합니다")
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
         }
         user.userPoint -= dto.totalPrice
         userRepository.save(user)
-        return ResponseEntity.status(HttpStatus.OK).body("성공적으로 결제되었습니다")
+        response.put("message", "성공적으로 결제되었습니다")
+        return ResponseEntity.status(HttpStatus.OK).body(response)
     }
 
     @Transactional(rollbackFor = [Exception::class])
@@ -67,10 +71,11 @@ class UserService(
                 userFingerPrint = dto.userFingerPrint,
             )
             userRepository.save(user)
-
-            ResponseEntity.status(HttpStatus.CREATED).body("회원가입에 성공하였습니다")
+            response.put("message", "회원가입에 성공하였습니다")
+            ResponseEntity.status(HttpStatus.CREATED).body(response)
         } catch (error: ValidationException) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.message)
+            response.put("error", error.message.toString())
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
         }
     }
 
