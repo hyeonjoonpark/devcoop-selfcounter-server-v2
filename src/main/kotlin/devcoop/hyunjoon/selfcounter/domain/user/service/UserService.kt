@@ -4,7 +4,7 @@ import devcoop.hyunjoon.selfcounter.domain.user.User
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
-import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.UserPointReqeust
+import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.UserPointRequest
 import devcoop.hyunjoon.selfcounter.domain.user.security.CustomUserDetailsService
 import devcoop.hyunjoon.selfcounter.global.utils.JwtUtil
 import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.Objects
 
 @Service
 class UserService(
@@ -38,7 +37,7 @@ class UserService(
     )
 
     @Transactional(rollbackFor = [Exception::class])
-    fun deductPoint(dto: UserPointReqeust): ResponseEntity<Any> {
+    fun deductPoint(dto: UserPointRequest): ResponseEntity<Any> {
         val user = userRepository.findByUserCode(dto.userCode)
             .orElseThrow{throw RuntimeException("존재하지 않는 사용자입니다")}
         if (user.userPoint < dto.totalPrice) {
