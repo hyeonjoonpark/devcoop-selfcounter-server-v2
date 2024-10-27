@@ -27,8 +27,8 @@ class UserService(
     private val customUserDetailsService: CustomUserDetailsService
 ) {
     val response: MutableMap<String, Any> = mutableMapOf()
-    private var accessTokenExpiredTime = 1000 * 60 * 60L
-    private var refreshTokenExpiredTime = 1000 * 60 * 60 * 24 * 7L
+    private var ACCESS_TOKEN_EXPIRED_TIME = 1000 * 60 * 60L
+    private var REFRESH_TOKEN_EXPIRED_TIME = 1000 * 60 * 60 * 24 * 7L
     
     private val validators: List<UserValidator> = listOf(
         UserCodeValidator(userRepository),
@@ -88,8 +88,8 @@ class UserService(
             throw ValidationException("비밀번호가 일치하지 않습니다.")
         }
         
-        val accessToken = jwtUtil.generateToken(userDetails, accessTokenExpiredTime)
-        val refreshToken = jwtUtil.generateToken(userDetails, refreshTokenExpiredTime)
+        val accessToken = jwtUtil.generateToken(userDetails, ACCESS_TOKEN_EXPIRED_TIME)
+        val refreshToken = jwtUtil.generateToken(userDetails, REFRESH_TOKEN_EXPIRED_TIME)
 
         // Refresh token 저장 로직
         user.refreshToken = refreshToken
