@@ -37,6 +37,8 @@ class SecurityConfig(
                 request
                     // 회원가입 API
                     .requestMatchers(HttpMethod.POST, ApiPath.COUNTER_USER_API_URL + "/signUp").permitAll()
+                    // 로그인 API
+                    .requestMatchers(HttpMethod.POST, ApiPath.COUNTER_USER_API_URL + "/auth/signIn").permitAll()
                     // 결제 (유저 포인트 차감 API)
                     .requestMatchers(HttpMethod.PUT, ApiPath.COUNTER_USER_API_URL + "/point/deduct").authenticated()
                     .anyRequest().permitAll()
