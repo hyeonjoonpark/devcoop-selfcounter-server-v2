@@ -19,7 +19,6 @@ spring:
     show-sql: true
     generate-ddl: true
     database: mysql
-    open-in-view: false
 server:
   servlet:
     encoding:
