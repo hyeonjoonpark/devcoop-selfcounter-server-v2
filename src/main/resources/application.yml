@@ -2,12 +2,12 @@ spring:
   profiles:
     active: local
     include: local
-    default: local
 ---
 spring:
   profiles:
     active: dev
     include: dev
+    default: dev
 ---
 spring:
   profiles:
