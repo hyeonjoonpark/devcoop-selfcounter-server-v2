@@ -2,7 +2,6 @@ package devcoop.hyunjoon.selfcounter.domain.item.presentation
 
 import devcoop.hyunjoon.selfcounter.domain.item.presentation.dto.response.ItemResponse
 import devcoop.hyunjoon.selfcounter.domain.item.service.ItemService
-import devcoop.hyunjoon.selfcounter.domain.user.service.UserService
 import devcoop.hyunjoon.selfcounter.global.utils.ApiPath
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestBody
