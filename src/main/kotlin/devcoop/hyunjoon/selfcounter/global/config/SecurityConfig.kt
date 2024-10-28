@@ -40,6 +40,8 @@ class SecurityConfig(
                     .requestMatchers(HttpMethod.POST, ApiPath.COUNTER_USER_API_URL + "/auth/signIn").permitAll()
                     // 결제 (유저 포인트 차감 API)
                     .requestMatchers(HttpMethod.PUT, ApiPath.COUNTER_USER_API_URL + "/point/deduct").authenticated()
+                    // 상품 항목조회
+                    .requestMatchers(HttpMethod.GET, ApiPath.COUNTER_ITEM_API_URL + "/read").authenticated()
                     .anyRequest().permitAll()
             }
             .sessionManagement { session ->
