@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class ItemService {
-    fun readByBarcode(barcodes: List<String>): ResponseEntity<List<ItemResponse>> {
+    fun readByBarcode(barcodes: List<String>): ResponseEntity<MutableList<ItemResponse>> {
 
     }
 }

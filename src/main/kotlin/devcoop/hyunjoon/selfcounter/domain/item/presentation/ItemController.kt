@@ -15,7 +15,7 @@ class ItemController(
     val itemService: ItemService,
 ) {
     @GetMapping("/read")
-    fun readItem(@RequestBody barcodes: List<String>): ResponseEntity<List<ItemResponse>> {
+    fun readItem(@RequestBody barcodes: List<String>): ResponseEntity<MutableList<ItemResponse>> {
         return itemService.readByBarcode(barcodes)
     }
 }
