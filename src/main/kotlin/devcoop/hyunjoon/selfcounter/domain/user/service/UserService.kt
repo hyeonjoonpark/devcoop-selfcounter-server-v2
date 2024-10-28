@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.net.URI
 
 @Service
 class UserService(
@@ -71,7 +72,9 @@ class UserService(
             )
             userRepository.save(user)
             response.put("message", "회원가입에 성공하였습니다")
-            ResponseEntity.status(HttpStatus.CREATED).body(response)
+            ResponseEntity.status(HttpStatus.CREATED)
+                .location(URI.create("/"))
+                .body(response)
         } catch (error: ValidationException) {
             response.put("error", error.message.toString())
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
