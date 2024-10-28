@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    @Value("\${jwt.secret}") private val secretKey: String,
     private val jwtFilter: JwtFilter
 ) {
 
