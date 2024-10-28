@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 class ItemController(
     val itemService: ItemService,
 ) {
-    @GetMapping
+    @GetMapping("/read")
     fun readItem(@RequestBody barcodes: List<String>): List<ItemResponse> {
         return itemService.readByBarcode(barcodes)
     }
