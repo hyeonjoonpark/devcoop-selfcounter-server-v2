@@ -11,5 +11,5 @@ spring:
 ---
 spring:
   profiles:
-    active: dev
-    include: dev
+    active: local
+    include: local
