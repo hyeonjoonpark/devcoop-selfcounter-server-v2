@@ -2,7 +2,7 @@ spring:
   application:
     name: communication_devtools
   datasource:
-    url: jdbc:mysql://${DB_HOST}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://${DB_HOST}/${DB_NAME}?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: ${DB_PASSWORD}
     username: ${DB_USERNAME}
@@ -19,6 +19,10 @@ spring:
     show-sql: true
     generate-ddl: true
     database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
 server:
   servlet:
     encoding:
