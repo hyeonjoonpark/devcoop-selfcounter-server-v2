@@ -8,3 +8,8 @@ spring:
   profiles:
     active: prod
     include: prod
+---
+spring:
+  profiles:
+    active: dev
+    include: dev
