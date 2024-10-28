@@ -1,10 +1,5 @@
 spring:
   profiles:
-    active: local
-    include: local
----
-spring:
-  profiles:
     active: dev
     include: dev
     default: dev
