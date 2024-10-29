@@ -3,8 +3,10 @@ package devcoop.hyunjoon.selfcounter.domain.user
 import devcoop.hyunjoon.selfcounter.domain.paylog.PayLog
 import devcoop.hyunjoon.selfcounter.domain.user.enums.Role
 import jakarta.persistence.*
+import org.hibernate.annotations.DynamicUpdate
 
 @Entity(name = "common_user")
+@DynamicUpdate
 class User private constructor(
     id: String,
     userCode: String,
@@ -30,15 +32,11 @@ class User private constructor(
     @Column(name = "userPoint") var userPoint: Int = userPoint
     @Column(name = "userFingerPrint") var userFingerPrint: String = userFingerPrint
         protected set
-    @Enumerated(value = EnumType.STRING) @Column(name = "role")
+    @Enumerated(value = EnumType.STRING) @Column(name = "roles")
     var role: Role = Role.ROLE_USER
         protected set
     @Column(name = "refreshToken")
     lateinit var refreshToken: String
-
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var payLogs: MutableList<PayLog> = mutableListOf()
-        protected set
 
     companion object {
         fun create(
