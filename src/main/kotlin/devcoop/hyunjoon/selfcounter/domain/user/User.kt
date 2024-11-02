@@ -33,7 +33,7 @@ class User private constructor(
     @Column(name = "userFingerPrint") var userFingerPrint: String = userFingerPrint
         protected set
     @Enumerated(value = EnumType.STRING) @Column(name = "roles")
-    var role: Role = Role.ROLE_USER
+    var role: Role = Role.ROLE_MENBER
         protected set
     @Column(name = "refreshToken")
     lateinit var refreshToken: String
