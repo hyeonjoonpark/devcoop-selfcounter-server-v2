@@ -8,7 +8,7 @@ import org.hibernate.annotations.DynamicUpdate
 @Entity @Table(name = "occount_items") @DynamicUpdate
 class Item(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "itemId")
-    val itemId: Long = 0L,
+    val itemId: Int = 0,
 
     @Column(name = "itemCode", columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'None'") var itemCode: String,
     @Column(name = "itemName") var itemName: String,
@@ -17,7 +17,7 @@ class Item(
     @Column(name = "itemCategory", length = 45, columnDefinition = "varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT ''") var itemCategory: String,
     @Column(name = "itemQuantity", nullable = false, columnDefinition = "int DEFAULT 0") var itemQuantity: Int,
     @Column(name = "event") @Enumerated(value = EnumType.STRING) var event: EventType = EventType.NONE,
-    @Column(name = "event_start_date") var eventStartDate: LocalDate = LocalDate.now(),
-    @Column(name = "event_end_date") var eventEndDate: LocalDate = LocalDate.now(),
-    @Column(name = "item_image", columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT ''") var itemImage: String,
+    @Column(name = "eventStartDate") var eventStartDate: LocalDate = LocalDate.now(),
+    @Column(name = "eventEndDate") var eventEndDate: LocalDate = LocalDate.now(),
+    @Column(name = "itemImage", columnDefinition = "varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT ''") var itemImage: String,
 )

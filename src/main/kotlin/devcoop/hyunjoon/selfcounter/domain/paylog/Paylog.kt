@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 class PayLog(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var payId: Long = 0L,
+    var payId: Int = 0,
     var userCode: String,
     @CreatedDate var payDate: LocalDateTime = LocalDateTime.now(),
     var payType: String,
@@ -20,6 +20,4 @@ class PayLog(
     var afterPoint: Int,
     val managedEmail: String = "셀프결제",
     @Enumerated(EnumType.STRING) var eventType: EventType,
-) {
-
-}
+)
