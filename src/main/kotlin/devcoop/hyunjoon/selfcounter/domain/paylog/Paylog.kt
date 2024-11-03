@@ -19,5 +19,5 @@ class PayLog(
     var payedPoint: Int,
     var afterPoint: Int,
     val managedEmail: String = "셀프결제",
-    @Enumerated(EnumType.STRING) var eventType: EventType,
+    @Enumerated(value = EnumType.STRING) var eventType: EventType = EventType.NONE
 )
