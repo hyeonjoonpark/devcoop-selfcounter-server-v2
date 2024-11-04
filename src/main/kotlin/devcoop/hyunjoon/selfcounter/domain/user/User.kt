@@ -1,5 +1,5 @@
 package devcoop.hyunjoon.selfcounter.domain.user
-\
+
 import devcoop.hyunjoon.selfcounter.domain.user.enums.Role
 import jakarta.persistence.*
 import org.hibernate.annotations.DynamicUpdate
