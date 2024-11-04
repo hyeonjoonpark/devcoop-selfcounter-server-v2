@@ -1,5 +1,6 @@
 package devcoop.hyunjoon.selfcounter.domain.user.service
 
+import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import devcoop.hyunjoon.selfcounter.domain.user.User
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
@@ -11,6 +12,7 @@ import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserPinValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserValidator
+import jakarta.persistence.EntityManager
 import jakarta.validation.ValidationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -25,7 +27,9 @@ class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtUtil: JwtUtil,
-    private val customUserDetailsService: CustomUserDetailsService
+    private val customUserDetailsService: CustomUserDetailsService,
+    private val entityManager: EntityManager,
+    private val queryFactory: SpringDataQueryFactory
 ) {
     val response: MutableMap<String, Any> = mutableMapOf()
     private var ACCESS_TOKEN_EXPIRED_TIME = 1000 * 60 * 60L
