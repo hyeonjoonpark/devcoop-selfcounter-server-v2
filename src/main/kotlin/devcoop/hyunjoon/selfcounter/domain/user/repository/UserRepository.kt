@@ -6,4 +6,6 @@ import java.util.Optional
 
 interface UserRepository : JpaRepository<User, String> {
     fun findByUserCode(userCode: String): Optional<User>
+
+    fun countByUserNumberContaining(prefix: String): Long
 }

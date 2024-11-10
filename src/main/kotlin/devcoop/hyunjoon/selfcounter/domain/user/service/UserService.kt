@@ -1,6 +1,5 @@
 package devcoop.hyunjoon.selfcounter.domain.user.service
 
-import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import devcoop.hyunjoon.selfcounter.domain.user.User
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SigninRequest
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.response.SigninResponse
@@ -12,7 +11,6 @@ import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserPinValidator
 import devcoop.hyunjoon.selfcounter.global.validator.UserValidator
-import jakarta.persistence.EntityManager
 import jakarta.validation.ValidationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -28,8 +26,6 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtUtil: JwtUtil,
     private val customUserDetailsService: CustomUserDetailsService,
-    private val entityManager: EntityManager,
-    private val queryFactory: SpringDataQueryFactory
 ) {
     val response: MutableMap<String, Any> = mutableMapOf()
     private var ACCESS_TOKEN_EXPIRED_TIME = 1000 * 60 * 60L
@@ -112,16 +108,25 @@ class UserService(
         )
     }
 
-    fun createUserId(year: String?, category: String): String {
-        val maxValue: Long = userRepository.count()
+    fun createUserId(year: String, category: String): String {
+        // 카테고리 코드 설정
         val categoryNumber = when (category) {
             "학생" -> "01"
             "학부모" -> "02"
             "교사" -> "03"
             else -> throw IllegalArgumentException("올바른 구분이 아닙니다.")
         }
-        return year + categoryNumber + (maxValue + 1).toString()
+
+        // 해당 연도와 카테고리에 대한 최대 userNumber의 갯수 조회
+        val maxNumberInSameYear: Long = userRepository.countByUserNumberContaining(year + categoryNumber)
+
+        // 자동 증가 값은 최대 값 + 1
+        val autoIncrementValue = maxNumberInSameYear + 1
+
+        // 새로운 userNumber 생성
+        return year + categoryNumber + String.format("%03d", autoIncrementValue.toInt())
     }
+
 
     fun reIssueAccessToken(refreshToken: String): String {
         // refreshToken 유효성 검사
