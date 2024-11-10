@@ -18,4 +18,9 @@ class ItemController(
     fun readItem(@RequestBody barcodes: List<String>): ResponseEntity<MutableList<ItemResponse>> {
         return itemService.readByBarcode(barcodes)
     }
+
+    @GetMapping("/event-items/read")
+    fun readEventItems(): ResponseEntity<MutableList<ItemResponse>> {
+        return itemService.readEventItems()
+    }
 }
