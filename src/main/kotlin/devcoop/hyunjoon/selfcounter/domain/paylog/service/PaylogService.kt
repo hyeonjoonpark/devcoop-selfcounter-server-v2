@@ -1,7 +1,7 @@
 package devcoop.hyunjoon.selfcounter.domain.paylog.service
 
 import devcoop.hyunjoon.selfcounter.domain.paylog.PayLog
-import devcoop.hyunjoon.selfcounter.domain.paylog.PayLogRepository
+import devcoop.hyunjoon.selfcounter.domain.paylog.repository.PayLogRepository
 import devcoop.hyunjoon.selfcounter.domain.paylog.presentation.dto.request.PaylogCreateRequest
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
