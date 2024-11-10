@@ -28,8 +28,8 @@ class UserService(
     private val customUserDetailsService: CustomUserDetailsService,
 ) {
     val response: MutableMap<String, Any> = mutableMapOf()
-    private var ACCESS_TOKEN_EXPIRED_TIME = 1000 * 60 * 60L
-    private var REFRESH_TOKEN_EXPIRED_TIME = 1000 * 60 * 60 * 24 * 7L
+    private var ACCESS_TOKEN_EXPIRED_TIME: Long = 1000 * 60 * 60L
+    private var REFRESH_TOKEN_EXPIRED_TIME: Long = 1000 * 60 * 60 * 24 * 7L
     
     private val validators: List<UserValidator> = listOf(
         UserCodeValidator(userRepository),
