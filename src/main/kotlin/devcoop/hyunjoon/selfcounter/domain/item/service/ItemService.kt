@@ -16,32 +16,32 @@ class ItemService(
 
     @Transactional(rollbackFor = [Exception::class], readOnly = true)
     fun readByBarcode(barcodes: List<String>): ResponseEntity<MutableList<ItemResponse>> {
-        val itemResponses: MutableList<ItemResponse> = mutableListOf()
-
-        for (barcode in barcodes) {
-            // 바코드로 아이템 조회
-            val item: Item = itemRepository.findByItemCode(barcode)
+        val itemResponses = barcodes.map {
+            barcode -> val item = itemRepository.findByItemCode(barcode)
                 .orElseThrow { RuntimeException("존재하지 않는 상품입니다") }
 
-            // 이벤트 타입 결정
-            val eventType = if (item.event == EventType.ONE_PLUS_ONE) {
-                EventType.ONE_PLUS_ONE
-            } else {
-                EventType.NONE
-            }
+            createItemResponse(item)
+        }.toMutableList()
 
-            // ItemResponse 생성
-            val response = ItemResponse(
-                itemName = item.itemName,
-                itemPrice = item.itemPrice,
-                itemQuantity = if (eventType == EventType.NONE) 1 else 2,
-                eventType = eventType
-            )
-            itemResponses.add(response)
+        return ResponseEntity.ok(itemResponses)
+    }
+
+    private fun createItemResponse(item: Item): ItemResponse {
+        val eventType = when (item.event) {
+            EventType.ONE_PLUS_ONE -> EventType.ONE_PLUS_ONE
+            else -> EventType.NONE
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(itemResponses)
+        val itemQuantity = if (eventType == EventType.NONE) 1 else 2
+
+        return ItemResponse(
+            itemName = item.itemName,
+            itemPrice = item.itemPrice,
+            itemQuantity = itemQuantity,
+            eventType = eventType
+        )
     }
+
 
     @Transactional(rollbackFor = [Exception::class], readOnly = true)
     fun readEventItems(): ResponseEntity<MutableList<ItemResponse>> {
