@@ -41,6 +41,7 @@ class PaylogService(
     private fun validate(dto: PaylogCreateRequest): ResponseEntity<MutableMap<String, Any>>? {
         val response: MutableMap<String, Any> = mutableMapOf()
         val isUserExist: Boolean = userRepository.existsByUserCode(dto.userCode)
+        val EMAIL_PREFIX = "@bssm.hs.kr"
 
         return when {
             // 결제금액 검증로직
@@ -66,6 +67,11 @@ class PaylogService(
             // 사용자 존재 여부 검증로직
             !isUserExist -> {
                 response["message"] = "존재하지 않는 사용자입니다"
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(response)
+            }
+            // manager 이메일 검증로직
+            dto.managedEmail.isBlank() || dto.managedEmail.matches(Regex(EMAIL_PREFIX)) -> {
+                response["message"] = "이메일이 비어있거나 옳지 않은 형식입니다"
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
             }
             else -> null
