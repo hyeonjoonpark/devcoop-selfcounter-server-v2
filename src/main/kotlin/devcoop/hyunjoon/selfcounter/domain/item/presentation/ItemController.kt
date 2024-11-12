@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController
 class ItemController(
     val itemService: ItemService,
 ) {
-    @GetMapping("/read")
+    @GetMapping("/read/all")
     fun readItem(@RequestBody barcodes: List<String>): ResponseEntity<MutableList<ItemResponse>> {
         return itemService.readByBarcode(barcodes)
     }
 
-    @GetMapping("/event-items/read")
+    @GetMapping("/read/event-items")
     fun readEventItems(): ResponseEntity<MutableList<ItemResponse>> {
         return itemService.readEventItems()
     }
