@@ -1,9 +1,10 @@
-package devcoop.hyunjoon.selfcounter.global.validator
+package devcoop.hyunjoon.selfcounter.global.validator.implement
 
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
+import devcoop.hyunjoon.selfcounter.global.validator.interfaces.UserValidator
 import jakarta.validation.ValidationException
 
-class UserEmailValidator: UserValidator {
+class UserEmailValidatorImpl: UserValidator {
     val bssmEmalRegex = "@bssm.hs.kr"
 
     override fun validate(dto: SignupRequest) {

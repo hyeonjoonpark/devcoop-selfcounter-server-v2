@@ -1,4 +1,4 @@
-package devcoop.hyunjoon.selfcounter.global.validator
+package devcoop.hyunjoon.selfcounter.global.validator.interfaces
 
 import devcoop.hyunjoon.selfcounter.domain.paylog.presentation.dto.request.PaylogCreateRequest
 import org.springframework.http.ResponseEntity

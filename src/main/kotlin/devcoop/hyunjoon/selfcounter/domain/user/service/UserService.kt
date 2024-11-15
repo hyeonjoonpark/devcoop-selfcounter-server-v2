@@ -7,10 +7,10 @@ import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupR
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.UserPointRequest
 import devcoop.hyunjoon.selfcounter.domain.user.security.CustomUserDetailsService
 import devcoop.hyunjoon.selfcounter.global.utils.JwtUtil
-import devcoop.hyunjoon.selfcounter.global.validator.UserCodeValidator
-import devcoop.hyunjoon.selfcounter.global.validator.UserEmailValidator
-import devcoop.hyunjoon.selfcounter.global.validator.UserPinValidator
-import devcoop.hyunjoon.selfcounter.global.validator.UserValidator
+import devcoop.hyunjoon.selfcounter.global.validator.implement.UserCodeValidatorImpl
+import devcoop.hyunjoon.selfcounter.global.validator.implement.UserEmailValidatorImpl
+import devcoop.hyunjoon.selfcounter.global.validator.implement.UserPinValidatorImpl
+import devcoop.hyunjoon.selfcounter.global.validator.interfaces.UserValidator
 import jakarta.validation.ValidationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -32,9 +32,9 @@ class UserService(
     private var REFRESH_TOKEN_EXPIRED_TIME: Long = 1000 * 60 * 60 * 24 * 7L
     
     private val validators: List<UserValidator> = listOf(
-        UserCodeValidator(userRepository),
-        UserPinValidator(),
-        UserEmailValidator()
+        UserCodeValidatorImpl(userRepository),
+        UserPinValidatorImpl(),
+        UserEmailValidatorImpl()
     )
 
     @Transactional(rollbackFor = [Exception::class])

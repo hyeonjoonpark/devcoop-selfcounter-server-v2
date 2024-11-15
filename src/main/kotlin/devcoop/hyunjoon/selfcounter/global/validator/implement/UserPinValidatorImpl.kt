@@ -1,9 +1,10 @@
-package devcoop.hyunjoon.selfcounter.global.validator
+package devcoop.hyunjoon.selfcounter.global.validator.implement
 
 import devcoop.hyunjoon.selfcounter.domain.user.presentation.dto.request.SignupRequest
+import devcoop.hyunjoon.selfcounter.global.validator.interfaces.UserValidator
 import jakarta.validation.ValidationException
 
-class UserPinValidator : UserValidator {
+class UserPinValidatorImpl : UserValidator {
     override fun validate(dto: SignupRequest) {
         if (dto.userPin.length < 4) {
             throw ValidationException("핀 번호는 최소 4자리 이상이여야 합니다")
