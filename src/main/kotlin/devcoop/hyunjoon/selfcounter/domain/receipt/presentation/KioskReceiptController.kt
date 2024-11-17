@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.RestController
 class KioskReceiptController(private val kioskReceiptService: KioskReceiptService) {
     @PostMapping("/create")
     fun createKioskReceipt(@RequestBody kioskReceiptCreateRequest: KioskReceiptCreateRequest): ResponseEntity<MutableMap<String, Any>> {
-        return kioskReceiptService.createKioskReceipt();
+        return kioskReceiptService.createKioskReceipt(kioskReceiptCreateRequest);
     }
 }
