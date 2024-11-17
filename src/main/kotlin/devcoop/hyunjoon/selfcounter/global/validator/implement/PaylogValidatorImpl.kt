@@ -10,7 +10,7 @@ class PaylogValidatorImpl(private val userRepository: UserRepository) : PaylogVa
     override fun validate(dto: PaylogCreateRequest): ResponseEntity<MutableMap<String, Any>>? {
         val response: MutableMap<String, Any> = mutableMapOf()
         val isUserExist: Boolean = userRepository.existsByUserCode(dto.userCode)
-        val EMAIL_PREFIX = "@bssm.hs.kr"
+        val EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.bssm\\.hs\\.kr$"
 
         return when {
             dto.payedPoint <= 0 -> {
@@ -33,7 +33,7 @@ class PaylogValidatorImpl(private val userRepository: UserRepository) : PaylogVa
                 response["message"] = "존재하지 않는 사용자입니다"
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(response)
             }
-            dto.managedEmail.isBlank() || !dto.managedEmail.endsWith(EMAIL_PREFIX) -> {
+            dto.managedEmail.isBlank() || !dto.managedEmail.matches(EMAIL_REGEX.toRegex()) -> {
                 response["message"] = "이메일이 비어있거나 옳지 않은 형식입니다"
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response)
             }
