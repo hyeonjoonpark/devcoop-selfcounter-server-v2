@@ -6,4 +6,8 @@ import jakarta.validation.constraints.NotBlank
 data class KioskReceiptCreateRequest(
     val items: MutableList<KioskItemInfo>,
     @NotBlank(message = "학생 바코드는 필수값입니다") val userCode: String,
-)
+) {
+    fun toEntity() {
+
+    }
+}
